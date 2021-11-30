@@ -28,10 +28,10 @@ CREATE TABLE `media` (
   `size` int(10) unsigned DEFAULT NULL,
   `path` char(1) DEFAULT NULL,
   `post_date` datetime DEFAULT NULL,
-  `poster_id` char(26) DEFAULT NULL,
+  `poster_id` bigint(12) unsigned DEFAULT NULL,
+  `file` mediumblob NOT NULL,
   PRIMARY KEY (`hash`),
-  KEY `poster_id` (`poster_id`),
-  CONSTRAINT `media_ibfk_1` FOREIGN KEY (`poster_id`) REFERENCES `user` (`phone_num`)
+  KEY `poster_id` (`poster_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -52,26 +52,29 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `phone_num` char(26) NOT NULL,
-  `password` char(1) DEFAULT NULL,
-  `first_name` char(1) DEFAULT NULL,
-  `last_name` char(1) DEFAULT NULL,
+  `phone_num` bigint(12) unsigned NOT NULL,
+  `passhash` char(64) DEFAULT NULL,
+  `first_name` varchar(25) DEFAULT NULL,
+  `last_name` varchar(25) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
-  `username` char(1) DEFAULT NULL,
-  `email` char(1) DEFAULT NULL,
+  `username` varchar(20) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
   `gender` enum('M','F') DEFAULT NULL,
-  `referral_id` char(26) DEFAULT NULL,
-  `registration_date` date DEFAULT NULL,
-  `ref_account_balance` float unsigned DEFAULT NULL,
-  `Momo_num` int(10) unsigned DEFAULT NULL,
-  `OM_num` int(10) unsigned DEFAULT NULL,
-  `account_balance` float unsigned DEFAULT NULL,
-  `town` char(1) DEFAULT NULL,
-  `nationality` char(1) DEFAULT NULL,
+  `referral_id` bigint(12) unsigned DEFAULT NULL,
+  `registration_date` datetime DEFAULT NULL,
+  `ref_account_balance` float unsigned NOT NULL DEFAULT 0,
+  `Momo_num` bigint(12) unsigned DEFAULT NULL,
+  `OM_num` bigint(12) unsigned DEFAULT NULL,
+  `account_balance` float unsigned NOT NULL DEFAULT 0,
+  `town` varchar(20) DEFAULT NULL,
+  `nationality` varchar(25) DEFAULT 'Cameroon',
   `business` tinyint(1) DEFAULT 0,
   `deleted` tinyint(1) DEFAULT 0,
   `last_activity` datetime DEFAULT NULL,
   `loyalty_bonus` tinyint(3) unsigned zerofill DEFAULT 000,
+  `salt` char(64) DEFAULT NULL,
+  `blocked` tinyint(1) NOT NULL DEFAULT 0,
+  `banned` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`phone_num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -94,4 +97,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-22  8:16:40
+-- Dump completed on 2021-11-30 18:47:31
